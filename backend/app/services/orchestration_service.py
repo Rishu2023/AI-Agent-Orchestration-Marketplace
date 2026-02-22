@@ -1,5 +1,4 @@
 import uuid
-import re
 from datetime import datetime
 from typing import Optional, List, Tuple, Dict, Any
 from sqlalchemy.orm import Session
@@ -8,13 +7,7 @@ from app.models.workflow import (
     WorkflowStatus, ExecutionStatus, StepType,
 )
 from app.schemas.workflow import WorkflowCreate, WorkflowUpdate
-
-
-def generate_slug(name: str) -> str:
-    slug = re.sub(r'[^a-zA-Z0-9\s-]', '', name.lower())
-    slug = re.sub(r'[\s]+', '-', slug.strip())
-    slug = f"{slug}-{uuid.uuid4().hex[:8]}"
-    return slug
+from app.services.utils import generate_slug
 
 
 def create_workflow(db: Session, workflow_data: WorkflowCreate, owner_id: uuid.UUID) -> Workflow:

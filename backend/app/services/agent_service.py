@@ -1,4 +1,3 @@
-import re
 import uuid
 from datetime import datetime
 from typing import Optional, List, Tuple
@@ -6,13 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from app.models.agent import Agent, AgentStatus
 from app.schemas.agent import AgentCreate, AgentUpdate
-
-
-def generate_slug(name: str) -> str:
-    slug = re.sub(r'[^a-zA-Z0-9\s-]', '', name.lower())
-    slug = re.sub(r'[\s]+', '-', slug.strip())
-    slug = f"{slug}-{uuid.uuid4().hex[:8]}"
-    return slug
+from app.services.utils import generate_slug
 
 
 def create_agent(db: Session, agent_data: AgentCreate, publisher_id: uuid.UUID) -> Agent:
