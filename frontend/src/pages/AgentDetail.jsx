@@ -138,7 +138,7 @@ export default function AgentDetail() {
               <h2 className="text-xl font-semibold text-gray-900 mb-4">About this Agent</h2>
               <div className="prose prose-gray max-w-none">
                 {agent.long_description?.split('\n').map((line, i) => (
-                  <p key={i} className="text-gray-600 mb-2">{line}</p>
+                  <p key={`desc-${i}-${line.slice(0, 20)}`} className="text-gray-600 mb-2">{line}</p>
                 ))}
               </div>
             </div>
