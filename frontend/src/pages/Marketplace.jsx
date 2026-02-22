@@ -218,6 +218,7 @@ export default function Marketplace() {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
+            aria-label="Category"
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             {categories.map((c) => (
@@ -227,6 +228,7 @@ export default function Marketplace() {
           <select
             value={selectedPricing}
             onChange={(e) => setSelectedPricing(e.target.value)}
+            aria-label="Pricing"
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             {pricingFilters.map((p) => (
@@ -236,6 +238,7 @@ export default function Marketplace() {
           <select
             value={selectedProvider}
             onChange={(e) => setSelectedProvider(e.target.value)}
+            aria-label="Provider"
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             {providerFilters.map((p) => (
@@ -245,6 +248,7 @@ export default function Marketplace() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
+            aria-label="Sort by"
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             <option value="popular">Most Popular</option>

@@ -19,8 +19,7 @@ describe('Marketplace', () => {
 
   it('renders category filter with Design option', () => {
     renderMarketplace()
-    const selects = screen.getAllByRole('combobox')
-    const categorySelect = selects[0]
+    const categorySelect = screen.getByLabelText('Category')
     const options = Array.from(categorySelect.querySelectorAll('option'))
     const designOption = options.find(o => o.value === 'design')
     expect(designOption).toBeDefined()
@@ -29,8 +28,7 @@ describe('Marketplace', () => {
 
   it('renders provider filter', () => {
     renderMarketplace()
-    const selects = screen.getAllByRole('combobox')
-    const providerSelect = selects[2]
+    const providerSelect = screen.getByLabelText('Provider')
     const options = Array.from(providerSelect.querySelectorAll('option'))
     const providerValues = options.map(o => o.value)
     expect(providerValues).toContain('openai')
@@ -46,8 +44,7 @@ describe('Marketplace', () => {
 
   it('filters agents by provider', () => {
     renderMarketplace()
-    const selects = screen.getAllByRole('combobox')
-    const providerSelect = selects[2]
+    const providerSelect = screen.getByLabelText('Provider')
     fireEvent.change(providerSelect, { target: { value: 'anthropic' } })
     // Should show only anthropic agents
     const countText = screen.getByText(/agents found/)

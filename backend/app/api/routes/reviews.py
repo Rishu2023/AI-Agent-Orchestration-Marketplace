@@ -52,7 +52,8 @@ def create_review(
     if not agent:
         raise HTTPException(status_code=404, detail="Agent not found")
 
-    # In production, user_id would come from authenticated user
+    # TODO: Replace with actual authenticated user ID from request token
+    # when authentication middleware is fully integrated
     user_id = uuid.uuid4()  # Placeholder
 
     review = Review(
