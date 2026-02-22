@@ -1,8 +1,10 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env")
+
     app_name: str = "AI Agent Orchestration Marketplace"
     app_version: str = "1.0.0"
     debug: bool = True
@@ -25,9 +27,6 @@ class Settings(BaseSettings):
     # Stripe
     stripe_secret_key: Optional[str] = None
     stripe_webhook_secret: Optional[str] = None
-
-    class Config:
-        env_file = ".env"
 
 
 settings = Settings()

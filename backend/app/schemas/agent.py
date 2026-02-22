@@ -1,10 +1,12 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from uuid import UUID
 
 
 class AgentBase(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+
     name: str = Field(..., min_length=1, max_length=200)
     description: str = Field(..., min_length=10, max_length=2000)
     long_description: Optional[str] = None
@@ -26,6 +28,8 @@ class AgentCreate(AgentBase):
 
 
 class AgentUpdate(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+
     name: Optional[str] = Field(None, min_length=1, max_length=200)
     description: Optional[str] = Field(None, min_length=10, max_length=2000)
     long_description: Optional[str] = None
@@ -42,6 +46,8 @@ class AgentUpdate(BaseModel):
 
 
 class AgentResponse(AgentBase):
+    model_config = ConfigDict(from_attributes=True, protected_namespaces=())
+
     id: UUID
     slug: str
     publisher_id: UUID
@@ -55,9 +61,6 @@ class AgentResponse(AgentBase):
     created_at: datetime
     updated_at: datetime
     published_at: Optional[datetime] = None
-
-    class Config:
-        from_attributes = True
 
 
 class AgentListResponse(BaseModel):

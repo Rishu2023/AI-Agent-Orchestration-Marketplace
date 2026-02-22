@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional, List
 from datetime import datetime
 from uuid import UUID
@@ -11,6 +11,8 @@ class ReviewCreate(BaseModel):
 
 
 class ReviewResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     agent_id: UUID
     user_id: UUID
@@ -19,9 +21,6 @@ class ReviewResponse(BaseModel):
     content: Optional[str] = None
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 class ReviewListResponse(BaseModel):

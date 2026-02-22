@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from uuid import UUID
@@ -20,12 +20,11 @@ class WorkflowStepCreate(BaseModel):
 
 
 class WorkflowStepResponse(WorkflowStepCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     workflow_id: UUID
     created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 class WorkflowCreate(BaseModel):
@@ -48,6 +47,8 @@ class WorkflowUpdate(BaseModel):
 
 
 class WorkflowResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     name: str
     slug: str
@@ -63,9 +64,6 @@ class WorkflowResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
-
 
 class WorkflowListResponse(BaseModel):
     workflows: List[WorkflowResponse]
@@ -80,6 +78,8 @@ class WorkflowExecuteRequest(BaseModel):
 
 
 class WorkflowExecutionResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     workflow_id: UUID
     status: str
@@ -93,6 +93,3 @@ class WorkflowExecutionResponse(BaseModel):
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
     created_at: datetime
-
-    class Config:
-        from_attributes = True

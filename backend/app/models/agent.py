@@ -1,7 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, Float, Integer, Boolean, DateTime, Text, Enum, ForeignKey, JSON
-from sqlalchemy.dialects.postgresql import UUID, ARRAY
+from sqlalchemy import Column, String, Float, Integer, Boolean, DateTime, Text, Enum, ForeignKey, JSON, Uuid
 from sqlalchemy.orm import relationship
 from app.database.session import Base
 import enum
@@ -39,7 +38,7 @@ class AgentStatus(str, enum.Enum):
 class Agent(Base):
     __tablename__ = "agents"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     name = Column(String(200), nullable=False, index=True)
     slug = Column(String(200), unique=True, nullable=False, index=True)
     description = Column(Text, nullable=False)
@@ -50,7 +49,7 @@ class Agent(Base):
     banner_url = Column(String(500))
 
     # Publisher
-    publisher_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    publisher_id = Column(Uuid, ForeignKey("users.id"), nullable=False)
 
     # Configuration
     system_prompt = Column(Text)
@@ -90,8 +89,8 @@ class Agent(Base):
 class AgentVersion(Base):
     __tablename__ = "agent_versions"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    agent_id = Column(UUID(as_uuid=True), ForeignKey("agents.id"), nullable=False)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    agent_id = Column(Uuid, ForeignKey("agents.id"), nullable=False)
     version_number = Column(String(20), nullable=False)
     changelog = Column(Text)
     system_prompt = Column(Text)

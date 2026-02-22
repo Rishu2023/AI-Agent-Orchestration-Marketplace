@@ -1,7 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, Integer, Boolean, DateTime, Text, Float, ForeignKey, JSON
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, Integer, Boolean, DateTime, Text, Float, ForeignKey, JSON, Uuid
 from sqlalchemy.orm import relationship
 from app.database.session import Base
 import enum
@@ -34,11 +33,11 @@ class StepType(str, enum.Enum):
 class Workflow(Base):
     __tablename__ = "workflows"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     name = Column(String(200), nullable=False)
     slug = Column(String(200), unique=True, nullable=False, index=True)
     description = Column(Text)
-    owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    owner_id = Column(Uuid, ForeignKey("users.id"), nullable=False)
 
     # Configuration
     steps_config = Column(JSON, default=list)
@@ -66,14 +65,14 @@ class Workflow(Base):
 class WorkflowStep(Base):
     __tablename__ = "workflow_steps"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    workflow_id = Column(UUID(as_uuid=True), ForeignKey("workflows.id"), nullable=False)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    workflow_id = Column(Uuid, ForeignKey("workflows.id"), nullable=False)
     name = Column(String(200), nullable=False)
     step_type = Column(String(20), nullable=False)
     position = Column(Integer, nullable=False)
 
     # Agent reference (if step_type is 'agent')
-    agent_id = Column(UUID(as_uuid=True), ForeignKey("agents.id"), nullable=True)
+    agent_id = Column(Uuid, ForeignKey("agents.id"), nullable=True)
 
     # Configuration
     config = Column(JSON, default=dict)
@@ -86,8 +85,8 @@ class WorkflowStep(Base):
     position_y = Column(Float, default=0.0)
 
     # Connections
-    next_step_id = Column(UUID(as_uuid=True), ForeignKey("workflow_steps.id"), nullable=True)
-    on_failure_step_id = Column(UUID(as_uuid=True), ForeignKey("workflow_steps.id"), nullable=True)
+    next_step_id = Column(Uuid, ForeignKey("workflow_steps.id"), nullable=True)
+    on_failure_step_id = Column(Uuid, ForeignKey("workflow_steps.id"), nullable=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -97,9 +96,9 @@ class WorkflowStep(Base):
 class WorkflowExecution(Base):
     __tablename__ = "workflow_executions"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    workflow_id = Column(UUID(as_uuid=True), ForeignKey("workflows.id"), nullable=False)
-    triggered_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    workflow_id = Column(Uuid, ForeignKey("workflows.id"), nullable=False)
+    triggered_by = Column(Uuid, ForeignKey("users.id"), nullable=False)
 
     status = Column(String(20), default=ExecutionStatus.PENDING.value)
     input_data = Column(JSON, default=dict)
