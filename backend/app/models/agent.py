@@ -13,6 +13,7 @@ class AgentCategory(str, enum.Enum):
     ANALYSIS = "analysis"
     MARKETING = "marketing"
     SALES = "sales"
+    DESIGN = "design"
     CUSTOMER_SUPPORT = "customer_support"
     DATA_PROCESSING = "data_processing"
     CREATIVE = "creative"

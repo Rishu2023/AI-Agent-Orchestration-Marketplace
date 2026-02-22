@@ -130,8 +130,9 @@ const categories = [
   { value: 'analysis', label: '📊 Analysis' },
   { value: 'marketing', label: '📢 Marketing' },
   { value: 'sales', label: '💼 Sales' },
+  { value: 'design', label: '🎨 Design' },
   { value: 'customer_support', label: '🎧 Support' },
-  { value: 'creative', label: '🎨 Creative' },
+  { value: 'creative', label: '✨ Creative' },
   { value: 'productivity', label: '⚡ Productivity' },
 ]
 
@@ -143,10 +144,18 @@ const pricingFilters = [
   { value: 'one_time', label: 'One-Time' },
 ]
 
+const providerFilters = [
+  { value: '', label: 'All Providers' },
+  { value: 'openai', label: 'OpenAI' },
+  { value: 'anthropic', label: 'Anthropic' },
+  { value: 'custom', label: 'Custom' },
+]
+
 export default function Marketplace() {
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedPricing, setSelectedPricing] = useState('')
+  const [selectedProvider, setSelectedProvider] = useState('')
   const [sortBy, setSortBy] = useState('popular')
 
   const filteredAgents = useMemo(() => {
@@ -169,6 +178,10 @@ export default function Marketplace() {
       result = result.filter((a) => a.pricing_model === selectedPricing)
     }
 
+    if (selectedProvider) {
+      result = result.filter((a) => a.model_provider === selectedProvider)
+    }
+
     switch (sortBy) {
       case 'popular':
         result.sort((a, b) => b.total_runs - a.total_runs)
@@ -188,7 +201,7 @@ export default function Marketplace() {
     }
 
     return result
-  }, [search, selectedCategory, selectedPricing, sortBy])
+  }, [search, selectedCategory, selectedPricing, selectedProvider, sortBy])
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -217,6 +230,15 @@ export default function Marketplace() {
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             {pricingFilters.map((p) => (
+              <option key={p.value} value={p.value}>{p.label}</option>
+            ))}
+          </select>
+          <select
+            value={selectedProvider}
+            onChange={(e) => setSelectedProvider(e.target.value)}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+          >
+            {providerFilters.map((p) => (
               <option key={p.value} value={p.value}>{p.label}</option>
             ))}
           </select>

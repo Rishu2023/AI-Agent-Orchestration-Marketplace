@@ -18,12 +18,16 @@ def list_agents(
     category: Optional[str] = None,
     search: Optional[str] = None,
     status: Optional[str] = None,
+    pricing_model: Optional[str] = None,
+    provider: Optional[str] = None,
+    sort_by: str = Query("newest", pattern="^(newest|popular|rating|price_low|price_high)$"),
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
     agents, total = agent_service.list_agents(
         db, category=category, search=search, status=status,
+        pricing_model=pricing_model, provider=provider, sort_by=sort_by,
         page=page, page_size=page_size,
     )
     return AgentListResponse(
@@ -47,6 +51,24 @@ def get_popular_agents(
     db: Session = Depends(get_db),
 ):
     agents = agent_service.get_popular_agents(db, limit=limit)
+    return [AgentResponse.model_validate(a) for a in agents]
+
+
+@router.get("/trending", response_model=list[AgentResponse])
+def get_trending_agents(
+    limit: int = Query(10, ge=1, le=50),
+    db: Session = Depends(get_db),
+):
+    agents = agent_service.get_trending_agents(db, limit=limit)
+    return [AgentResponse.model_validate(a) for a in agents]
+
+
+@router.get("/new", response_model=list[AgentResponse])
+def get_new_arrivals(
+    limit: int = Query(10, ge=1, le=50),
+    db: Session = Depends(get_db),
+):
+    agents = agent_service.get_new_arrivals(db, limit=limit)
     return [AgentResponse.model_validate(a) for a in agents]
 
 

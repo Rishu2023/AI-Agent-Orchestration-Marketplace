@@ -14,9 +14,10 @@ const categoryOptions = [
   { value: 'analysis', label: '📊 Analysis' },
   { value: 'marketing', label: '📢 Marketing' },
   { value: 'sales', label: '💼 Sales' },
+  { value: 'design', label: '🎨 Design' },
   { value: 'customer_support', label: '🎧 Customer Support' },
   { value: 'data_processing', label: '🔄 Data Processing' },
-  { value: 'creative', label: '🎨 Creative' },
+  { value: 'creative', label: '✨ Creative' },
   { value: 'productivity', label: '⚡ Productivity' },
   { value: 'other', label: '🤖 Other' },
 ]

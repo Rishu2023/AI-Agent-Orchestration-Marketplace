@@ -47,6 +47,9 @@ def list_agents(
     category: Optional[str] = None,
     search: Optional[str] = None,
     status: Optional[str] = None,
+    pricing_model: Optional[str] = None,
+    provider: Optional[str] = None,
+    sort_by: str = "newest",
     page: int = 1,
     page_size: int = 20,
 ) -> Tuple[List[Agent], int]:
@@ -60,6 +63,12 @@ def list_agents(
     if category:
         query = query.filter(Agent.category == category)
 
+    if pricing_model:
+        query = query.filter(Agent.pricing_model == pricing_model)
+
+    if provider:
+        query = query.filter(Agent.model_provider == provider)
+
     if search:
         search_term = f"%{search}%"
         query = query.filter(
@@ -70,7 +79,19 @@ def list_agents(
         )
 
     total = query.count()
-    agents = query.order_by(Agent.created_at.desc()).offset((page - 1) * page_size).limit(page_size).all()
+
+    if sort_by == "rating":
+        query = query.order_by(Agent.average_rating.desc())
+    elif sort_by == "popular":
+        query = query.order_by(Agent.total_runs.desc())
+    elif sort_by == "price_low":
+        query = query.order_by(Agent.price.asc())
+    elif sort_by == "price_high":
+        query = query.order_by(Agent.price.desc())
+    else:
+        query = query.order_by(Agent.created_at.desc())
+
+    agents = query.offset((page - 1) * page_size).limit(page_size).all()
 
     return agents, total
 
@@ -126,6 +147,26 @@ def get_popular_agents(db: Session, limit: int = 10) -> List[Agent]:
         db.query(Agent)
         .filter(Agent.status == AgentStatus.PUBLISHED.value)
         .order_by(Agent.total_runs.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+def get_trending_agents(db: Session, limit: int = 10) -> List[Agent]:
+    return (
+        db.query(Agent)
+        .filter(Agent.status == AgentStatus.PUBLISHED.value)
+        .order_by(Agent.total_runs.desc(), Agent.average_rating.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+def get_new_arrivals(db: Session, limit: int = 10) -> List[Agent]:
+    return (
+        db.query(Agent)
+        .filter(Agent.status == AgentStatus.PUBLISHED.value)
+        .order_by(Agent.created_at.desc())
         .limit(limit)
         .all()
     )
