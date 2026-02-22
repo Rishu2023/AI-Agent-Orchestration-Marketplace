@@ -1,9 +1,8 @@
 import re
 import uuid
-from datetime import datetime
 from typing import Optional, List, Tuple
 from sqlalchemy.orm import Session
-from sqlalchemy import or_, func
+from sqlalchemy import or_
 from app.models.agent import Agent, AgentStatus
 from app.schemas.agent import AgentCreate, AgentUpdate
 
@@ -91,7 +90,6 @@ def update_agent(db: Session, agent_id: uuid.UUID, agent_data: AgentUpdate) -> O
     for field, value in update_data.items():
         setattr(agent, field, value)
 
-    agent.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(agent)
     return agent
@@ -122,7 +120,7 @@ def delete_agent(db: Session, agent_id: uuid.UUID) -> bool:
 def get_featured_agents(db: Session, limit: int = 10) -> List[Agent]:
     return (
         db.query(Agent)
-        .filter(Agent.status == AgentStatus.PUBLISHED.value, Agent.is_featured == True)
+        .filter(Agent.status == AgentStatus.PUBLISHED.value, Agent.is_featured.is_(True))
         .order_by(Agent.average_rating.desc())
         .limit(limit)
         .all()

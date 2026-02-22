@@ -108,7 +108,6 @@ def update_workflow(db: Session, workflow_id: uuid.UUID, data: WorkflowUpdate) -
     for field, value in update_data.items():
         setattr(workflow, field, value)
 
-    workflow.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(workflow)
     return workflow
