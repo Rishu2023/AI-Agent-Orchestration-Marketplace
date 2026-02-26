@@ -6,6 +6,10 @@ from app.models.model_usage import ModelUsage
 from app.models.federation import FederationNode, FederatedAgent
 from app.models.aacp import AgentMessage
 from app.models.economy import CreditAccount, CreditTransaction
+from app.models.memory import AgentMemory, KnowledgeBase
+from app.models.benchmark import BenchmarkResult
+from app.models.training import TrainingJob, FineTunedModel
+from app.models.research import ResearchPaper, TrendingModel
 
 __all__ = [
     "Agent", "AgentVersion",
@@ -16,4 +20,8 @@ __all__ = [
     "FederationNode", "FederatedAgent",
     "AgentMessage",
     "CreditAccount", "CreditTransaction",
+    "AgentMemory", "KnowledgeBase",
+    "BenchmarkResult",
+    "TrainingJob", "FineTunedModel",
+    "ResearchPaper", "TrendingModel",
 ]
