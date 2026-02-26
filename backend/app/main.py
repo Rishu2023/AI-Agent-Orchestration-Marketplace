@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.config import settings
-from app.api.routes import agents, workflows, auth, federation, protocol, economy, memory, benchmarks, training, research
+from app.api.routes import agents, workflows, auth, federation, protocol, economy, memory, benchmarks, training, research, governance, billing, admin, platform
 from app.services.meta_agent_service import meta_agent_service
 import logging
 
@@ -48,6 +48,10 @@ app.include_router(memory.router, prefix="/api/v1")
 app.include_router(benchmarks.router, prefix="/api/v1")
 app.include_router(training.router, prefix="/api/v1")
 app.include_router(research.router, prefix="/api/v1")
+app.include_router(governance.router, prefix="/api/v1")
+app.include_router(billing.router, prefix="/api/v1")
+app.include_router(admin.router, prefix="/api/v1")
+app.include_router(platform.router, prefix="/api/v1")
 
 
 @app.get("/")

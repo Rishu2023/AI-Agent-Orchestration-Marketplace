@@ -10,6 +10,10 @@ from app.models.memory import AgentMemory, KnowledgeBase
 from app.models.benchmark import BenchmarkResult
 from app.models.training import TrainingJob, FineTunedModel
 from app.models.research import ResearchPaper, TrendingModel
+from app.models.governance import Proposal, Vote
+from app.models.billing import ApiKey, BillingPlan, Subscription, UsageRecord
+from app.models.admin import AuditLog, PlatformAnnouncement, EmergencyKillSwitch
+from app.models.platform_stats import PlatformSnapshot
 
 __all__ = [
     "Agent", "AgentVersion",
@@ -24,4 +28,8 @@ __all__ = [
     "BenchmarkResult",
     "TrainingJob", "FineTunedModel",
     "ResearchPaper", "TrendingModel",
+    "Proposal", "Vote",
+    "ApiKey", "BillingPlan", "Subscription", "UsageRecord",
+    "AuditLog", "PlatformAnnouncement", "EmergencyKillSwitch",
+    "PlatformSnapshot",
 ]
