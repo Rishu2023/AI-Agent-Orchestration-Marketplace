@@ -130,7 +130,7 @@ def create_announcement(
         expires_at=expires_at,
     )
     db.add(announcement)
-    log_action(db, admin_id, "create_announcement", "federation", str(announcement.id))
+    log_action(db, admin_id, "create_announcement", "announcement", str(announcement.id))
     db.commit()
     db.refresh(announcement)
     return announcement
@@ -214,7 +214,7 @@ def override_benchmark(
         if hasattr(result, key):
             setattr(result, key, value)
     log_action(
-        db, admin_id, "override_benchmark", "workflow", str(result_id),
+        db, admin_id, "override_benchmark", "benchmark", str(result_id),
         details={"scores": scores},
     )
     db.commit()
