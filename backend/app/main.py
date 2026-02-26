@@ -3,8 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.config import settings
 from app.api.routes import agents, workflows, auth, federation, protocol, economy, memory, benchmarks, training, research, governance, billing, admin, platform
+from app.api.routes import metrics as metrics_route
+from app.middleware.rate_limiter import RateLimiterMiddleware
 from app.services.meta_agent_service import meta_agent_service
 import logging
+import redis as redis_lib
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +30,9 @@ app = FastAPI(
     redoc_url="/redoc",
     lifespan=lifespan,
 )
+
+# Rate limiter middleware
+app.add_middleware(RateLimiterMiddleware, max_requests=100, window_seconds=60)
 
 # CORS middleware
 app.add_middleware(
@@ -53,6 +59,9 @@ app.include_router(billing.router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")
 app.include_router(platform.router, prefix="/api/v1")
 
+# Metrics route (root level, not under /api/v1)
+app.include_router(metrics_route.router)
+
 
 @app.get("/")
 def root():
@@ -67,3 +76,55 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+
+@app.get("/health/db")
+def health_check_db():
+    """Check database connectivity."""
+    try:
+        from app.database.session import engine
+        with engine.connect() as conn:
+            conn.exec_driver_sql("SELECT 1")
+        return {"status": "healthy", "service": "database"}
+    except Exception as e:
+        return {"status": "unhealthy", "service": "database", "error": str(e)}
+
+
+@app.get("/health/redis")
+def health_check_redis():
+    """Check Redis connectivity."""
+    try:
+        r = redis_lib.from_url(settings.redis_url, socket_connect_timeout=2)
+        r.ping()
+        return {"status": "healthy", "service": "redis"}
+    except Exception as e:
+        return {"status": "unhealthy", "service": "redis", "error": str(e)}
+
+
+@app.get("/health/services")
+def health_check_services():
+    """Check all services."""
+    services = {}
+
+    # Database
+    try:
+        from app.database.session import engine
+        with engine.connect() as conn:
+            conn.exec_driver_sql("SELECT 1")
+        services["database"] = {"status": "healthy"}
+    except Exception as e:
+        services["database"] = {"status": "unhealthy", "error": str(e)}
+
+    # Redis
+    try:
+        r = redis_lib.from_url(settings.redis_url, socket_connect_timeout=2)
+        r.ping()
+        services["redis"] = {"status": "healthy"}
+    except Exception as e:
+        services["redis"] = {"status": "unhealthy", "error": str(e)}
+
+    all_healthy = all(s["status"] == "healthy" for s in services.values())
+    return {
+        "status": "healthy" if all_healthy else "degraded",
+        "services": services,
+    }
