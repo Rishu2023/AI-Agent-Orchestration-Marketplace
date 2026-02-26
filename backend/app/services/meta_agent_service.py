@@ -237,8 +237,7 @@ class MetaAgentService:
             self._evaluation_task.cancel()
 
     def start_background_evaluation(self, agents: List[Dict[str, Any]]) -> None:
-        loop = asyncio.get_event_loop()
-        self._evaluation_task = loop.create_task(self.schedule_evaluation(agents))
+        self._evaluation_task = asyncio.create_task(self.schedule_evaluation(agents))
 
 
 # Singleton instance
