@@ -50,6 +50,24 @@ def get_popular_agents(
     return [AgentResponse.model_validate(a) for a in agents]
 
 
+@router.get("/trending", response_model=list[AgentResponse])
+def get_trending_agents(
+    limit: int = Query(10, ge=1, le=50),
+    db: Session = Depends(get_db),
+):
+    agents = agent_service.get_trending_agents(db, limit=limit)
+    return [AgentResponse.model_validate(a) for a in agents]
+
+
+@router.get("/leaderboard", response_model=list[AgentResponse])
+def get_leaderboard_agents(
+    limit: int = Query(10, ge=1, le=50),
+    db: Session = Depends(get_db),
+):
+    agents = agent_service.get_leaderboard_agents(db, limit=limit)
+    return [AgentResponse.model_validate(a) for a in agents]
+
+
 @router.get("/{agent_id}", response_model=AgentResponse)
 def get_agent(agent_id: uuid.UUID, db: Session = Depends(get_db)):
     agent = agent_service.get_agent(db, agent_id)

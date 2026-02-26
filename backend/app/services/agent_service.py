@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, List, Tuple
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
@@ -126,6 +126,27 @@ def get_popular_agents(db: Session, limit: int = 10) -> List[Agent]:
         db.query(Agent)
         .filter(Agent.status == AgentStatus.PUBLISHED.value)
         .order_by(Agent.total_runs.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+def get_trending_agents(db: Session, limit: int = 10) -> List[Agent]:
+    cutoff = datetime.utcnow() - timedelta(days=7)
+    return (
+        db.query(Agent)
+        .filter(Agent.status == AgentStatus.PUBLISHED.value, Agent.updated_at >= cutoff)
+        .order_by(Agent.total_runs.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+def get_leaderboard_agents(db: Session, limit: int = 10) -> List[Agent]:
+    return (
+        db.query(Agent)
+        .filter(Agent.status == AgentStatus.PUBLISHED.value)
+        .order_by(Agent.average_rating.desc(), Agent.total_runs.desc())
         .limit(limit)
         .all()
     )

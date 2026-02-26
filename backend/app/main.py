@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.config import settings
-from app.api.routes import agents, workflows, auth
+from app.api.routes import agents, workflows, auth, federation, protocol, economy
 from app.services.meta_agent_service import meta_agent_service
 import logging
 
@@ -41,6 +41,9 @@ app.add_middleware(
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(agents.router, prefix="/api/v1")
 app.include_router(workflows.router, prefix="/api/v1")
+app.include_router(federation.router, prefix="/api/v1")
+app.include_router(protocol.router, prefix="/api/v1")
+app.include_router(economy.router, prefix="/api/v1")
 
 
 @app.get("/")
