@@ -13,6 +13,7 @@ import MemoryManagement from './pages/MemoryManagement'
 import BenchmarkPage from './pages/BenchmarkPage'
 import TrainingDashboard from './pages/TrainingDashboard'
 import ResearchPage from './pages/ResearchPage'
+import GovernancePage from './pages/GovernancePage'
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/benchmarks" element={<BenchmarkPage />} />
             <Route path="/training" element={<TrainingDashboard />} />
             <Route path="/research" element={<ResearchPage />} />
+            <Route path="/governance" element={<GovernancePage />} />
           </Routes>
         </main>
         <Footer />
