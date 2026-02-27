@@ -15,6 +15,7 @@ import TrainingDashboard from './pages/TrainingDashboard'
 import ResearchPage from './pages/ResearchPage'
 import GovernancePage from './pages/GovernancePage'
 import BillingPage from './pages/BillingPage'
+import AdminPanel from './pages/AdminPanel'
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/research" element={<ResearchPage />} />
             <Route path="/governance" element={<GovernancePage />} />
             <Route path="/billing" element={<BillingPage />} />
+            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </main>
         <Footer />
