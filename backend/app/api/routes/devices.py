@@ -29,6 +29,24 @@ def list_devices(owner_id: uuid.UUID = Query(None), page: int = Query(1, ge=1),
     devices, total = device_service.list_devices(db, owner_id, page, page_size)
     return DeviceListResponse(devices=[DeviceResponse.model_validate(d) for d in devices], total=total)
 
+# Device Marketplace (placed before /{device_id} to avoid route conflicts)
+@router.post("/marketplace/list", response_model=DeviceListingResponse, status_code=201)
+def create_listing(request: DeviceListingCreate, db: Session = Depends(get_db)):
+    listing = device_service.create_listing(
+        db, request.device_id, request.owner_id, request.description,
+        request.price_per_command, request.price_per_hour,
+        request.availability_schedule, request.usage_terms
+    )
+    if not listing:
+        raise HTTPException(status_code=404, detail="Device not found")
+    return DeviceListingResponse.model_validate(listing)
+
+@router.get("/marketplace", response_model=dict)
+def browse_marketplace(page: int = Query(1, ge=1), page_size: int = Query(20, ge=1, le=100),
+                       db: Session = Depends(get_db)):
+    listings, total = device_service.list_marketplace(db, page, page_size)
+    return {"listings": [DeviceListingResponse.model_validate(l) for l in listings], "total": total}
+
 @router.get("/{device_id}", response_model=DeviceResponse)
 def get_device(device_id: uuid.UUID, db: Session = Depends(get_db)):
     device = device_service.get_device(db, device_id)
@@ -113,24 +131,6 @@ def get_twin_history(device_id: uuid.UUID, db: Session = Depends(get_db)):
     if history is None:
         raise HTTPException(status_code=404, detail="Digital twin not found")
     return {"device_id": str(device_id), "history": history}
-
-# Device Marketplace
-@router.post("/marketplace/list", response_model=DeviceListingResponse, status_code=201)
-def create_listing(request: DeviceListingCreate, db: Session = Depends(get_db)):
-    listing = device_service.create_listing(
-        db, request.device_id, request.owner_id, request.description,
-        request.price_per_command, request.price_per_hour,
-        request.availability_schedule, request.usage_terms
-    )
-    if not listing:
-        raise HTTPException(status_code=404, detail="Device not found")
-    return DeviceListingResponse.model_validate(listing)
-
-@router.get("/marketplace", response_model=dict)
-def browse_marketplace(page: int = Query(1, ge=1), page_size: int = Query(20, ge=1, le=100),
-                       db: Session = Depends(get_db)):
-    listings, total = device_service.list_marketplace(db, page, page_size)
-    return {"listings": [DeviceListingResponse.model_validate(l) for l in listings], "total": total}
 
 # Edge Deployments
 @router.post("/edge/deploy", response_model=EdgeDeploymentResponse, status_code=201)
