@@ -25,6 +25,15 @@ export default function Navbar() {
               <Link to="/workflows" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
                 Workflows
               </Link>
+              <Link to="/economy" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                Economy
+              </Link>
+              <Link to="/federation" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                Federation
+              </Link>
+              <Link to="/memory" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                Memory
+              </Link>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-4">
@@ -63,6 +72,15 @@ export default function Navbar() {
             </Link>
             <Link to="/workflows" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
               Workflows
+            </Link>
+            <Link to="/economy" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
+              Economy
+            </Link>
+            <Link to="/federation" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
+              Federation
+            </Link>
+            <Link to="/memory" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
+              Memory
             </Link>
           </div>
         </div>

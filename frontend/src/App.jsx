@@ -7,6 +7,9 @@ import AgentDetail from './pages/AgentDetail'
 import AgentBuilder from './pages/AgentBuilder'
 import WorkflowBuilder from './pages/WorkflowBuilder'
 import Home from './pages/Home'
+import EconomyDashboard from './pages/EconomyDashboard'
+import FederationDashboard from './pages/FederationDashboard'
+import MemoryManagement from './pages/MemoryManagement'
 
 export default function App() {
   return (
@@ -20,6 +23,9 @@ export default function App() {
             <Route path="/agents/:id" element={<AgentDetail />} />
             <Route path="/builder" element={<AgentBuilder />} />
             <Route path="/workflows" element={<WorkflowBuilder />} />
+            <Route path="/economy" element={<EconomyDashboard />} />
+            <Route path="/federation" element={<FederationDashboard />} />
+            <Route path="/memory" element={<MemoryManagement />} />
           </Routes>
         </main>
         <Footer />
