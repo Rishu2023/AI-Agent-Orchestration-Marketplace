@@ -1,4 +1,5 @@
 import uuid
+from enum import Enum
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.database.session import get_db
@@ -12,6 +13,13 @@ from app.schemas.device import (
 from app.services import device_service
 
 router = APIRouter(prefix="/devices", tags=["devices"])
+
+
+class DeviceStatusEnum(str, Enum):
+    online = "online"
+    offline = "offline"
+    error = "error"
+    maintenance = "maintenance"
 
 # Device Registry
 @router.post("/register", response_model=dict, status_code=201)
@@ -73,7 +81,7 @@ def deregister_device(device_id: uuid.UUID, db: Session = Depends(get_db)):
     return DeviceResponse.model_validate(device)
 
 @router.put("/{device_id}/status", response_model=DeviceResponse)
-def update_status(device_id: uuid.UUID, status: str = Query(...), db: Session = Depends(get_db)):
+def update_status(device_id: uuid.UUID, status: DeviceStatusEnum = Query(...), db: Session = Depends(get_db)):
     device = device_service.update_device_status(db, device_id, status)
     if not device:
         raise HTTPException(status_code=404, detail="Device not found")
