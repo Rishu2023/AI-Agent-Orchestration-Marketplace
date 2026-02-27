@@ -43,6 +43,18 @@ export default function Navbar() {
               <Link to="/research" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
                 Research
               </Link>
+              <Link to="/governance" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                Governance
+              </Link>
+              <Link to="/billing" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                Billing
+              </Link>
+              <Link to="/dashboard" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                Dashboard
+              </Link>
+              <Link to="/admin" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+                Admin
+              </Link>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-4">
@@ -99,6 +111,18 @@ export default function Navbar() {
             </Link>
             <Link to="/research" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
               Research
+            </Link>
+            <Link to="/governance" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
+              Governance
+            </Link>
+            <Link to="/billing" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
+              Billing
+            </Link>
+            <Link to="/dashboard" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
+              Dashboard
+            </Link>
+            <Link to="/admin" className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
+              Admin
             </Link>
           </div>
         </div>
