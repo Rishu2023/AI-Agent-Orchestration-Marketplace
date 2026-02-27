@@ -13,6 +13,11 @@ import MemoryManagement from './pages/MemoryManagement'
 import BenchmarkPage from './pages/BenchmarkPage'
 import TrainingDashboard from './pages/TrainingDashboard'
 import ResearchPage from './pages/ResearchPage'
+import GovernancePage from './pages/GovernancePage'
+import BillingPage from './pages/BillingPage'
+import AdminPanel from './pages/AdminPanel'
+import Dashboard from './pages/Dashboard'
+import DeviceRegistry from './pages/DeviceRegistry'
 
 export default function App() {
   return (
@@ -32,6 +37,11 @@ export default function App() {
             <Route path="/benchmarks" element={<BenchmarkPage />} />
             <Route path="/training" element={<TrainingDashboard />} />
             <Route path="/research" element={<ResearchPage />} />
+            <Route path="/governance" element={<GovernancePage />} />
+            <Route path="/billing" element={<BillingPage />} />
+            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/devices" element={<DeviceRegistry />} />
           </Routes>
         </main>
         <Footer />
