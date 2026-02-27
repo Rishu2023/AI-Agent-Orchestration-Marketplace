@@ -17,6 +17,7 @@ import GovernancePage from './pages/GovernancePage'
 import BillingPage from './pages/BillingPage'
 import AdminPanel from './pages/AdminPanel'
 import Dashboard from './pages/Dashboard'
+import DeviceRegistry from './pages/DeviceRegistry'
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/billing" element={<BillingPage />} />
             <Route path="/admin" element={<AdminPanel />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/devices" element={<DeviceRegistry />} />
           </Routes>
         </main>
         <Footer />
