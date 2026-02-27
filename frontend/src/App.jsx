@@ -16,6 +16,7 @@ import ResearchPage from './pages/ResearchPage'
 import GovernancePage from './pages/GovernancePage'
 import BillingPage from './pages/BillingPage'
 import AdminPanel from './pages/AdminPanel'
+import Dashboard from './pages/Dashboard'
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/governance" element={<GovernancePage />} />
             <Route path="/billing" element={<BillingPage />} />
             <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
         <Footer />
