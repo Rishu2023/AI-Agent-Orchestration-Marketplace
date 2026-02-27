@@ -7,6 +7,12 @@ import AgentDetail from './pages/AgentDetail'
 import AgentBuilder from './pages/AgentBuilder'
 import WorkflowBuilder from './pages/WorkflowBuilder'
 import Home from './pages/Home'
+import EconomyDashboard from './pages/EconomyDashboard'
+import FederationDashboard from './pages/FederationDashboard'
+import MemoryManagement from './pages/MemoryManagement'
+import BenchmarkPage from './pages/BenchmarkPage'
+import TrainingDashboard from './pages/TrainingDashboard'
+import ResearchPage from './pages/ResearchPage'
 
 export default function App() {
   return (
@@ -20,6 +26,12 @@ export default function App() {
             <Route path="/agents/:id" element={<AgentDetail />} />
             <Route path="/builder" element={<AgentBuilder />} />
             <Route path="/workflows" element={<WorkflowBuilder />} />
+            <Route path="/economy" element={<EconomyDashboard />} />
+            <Route path="/federation" element={<FederationDashboard />} />
+            <Route path="/memory" element={<MemoryManagement />} />
+            <Route path="/benchmarks" element={<BenchmarkPage />} />
+            <Route path="/training" element={<TrainingDashboard />} />
+            <Route path="/research" element={<ResearchPage />} />
           </Routes>
         </main>
         <Footer />

@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     # AI Providers
     openai_api_key: Optional[str] = None
     anthropic_api_key: Optional[str] = None
+    mistral_api_key: Optional[str] = None
+    groq_api_key: Optional[str] = None
+    ollama_base_url: Optional[str] = None
 
     # Stripe
     stripe_secret_key: Optional[str] = None
