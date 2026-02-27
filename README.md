@@ -20,8 +20,16 @@ A full-stack platform for discovering, building, and orchestrating AI agents. Us
 - **Billing** — API key management, subscription plans, and usage tracking.
 - **Admin** — User management, kill switches, announcements, and audit logging.
 - **Platform Analytics** — Real-time platform statistics and historical metrics.
+- **Physical AI Control** — Register and control physical devices (robots, drones, sensors, IoT).
+- **Digital Twins** — Virtual replicas of physical devices with simulation-first safety.
+- **Computer Vision** — Image capture, object detection, OCR, and scene analysis.
+- **IoT & Sensors** — Real-time sensor data with threshold triggers and MQTT support.
+- **ROS2 Bridge** — Connect ROS2-enabled robots for topic publishing and service calls.
+- **Edge AI Deployment** — Deploy quantized models to edge devices (Raspberry Pi, Jetson, ESP32).
+- **Device Marketplace** — Rent physical devices and capabilities using credits.
 - **Metrics & Monitoring** — Prometheus-compatible metrics endpoint for observability.
 - **Rate Limiting** — Configurable per-IP rate limiting middleware.
+- **Security Hardening** — CSP headers, brute force protection, and security health checks.
 
 ## Tech Stack
 
@@ -66,6 +74,10 @@ A full-stack platform for discovering, building, and orchestrating AI agents. Us
 | `governance_service` | Proposal management and community voting |
 | `billing_service` | API keys, subscriptions, and usage metering |
 | `meta_agent_service` | Background agent evaluation and scheduling |
+| `device_service` | Physical device registry, commands, digital twins |
+| `iot_service` | IoT sensor data, triggers, and subscriptions |
+| `vision_service` | Computer vision capture and analysis |
+| `ros_bridge_service` | ROS2 robot connection and topic management |
 
 ### Data Models
 
@@ -78,6 +90,10 @@ A full-stack platform for discovering, building, and orchestrating AI agents. Us
 - **Transaction** — Credit economy transaction records.
 - **Memory** — Persistent agent memory entries.
 - **Proposal / Vote** — Governance proposals and votes.
+- **Device / DeviceCommand** — Physical device registry and command queue.
+- **DigitalTwin** — Virtual replicas mirroring physical device state.
+- **DeviceListing** — Device marketplace rental listings.
+- **EdgeDeployment** — Edge AI model deployment tracking.
 
 ## Project Structure
 
@@ -96,12 +112,18 @@ A full-stack platform for discovering, building, and orchestrating AI agents. Us
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
-│   │   ├── pages/            # Home, Marketplace, AgentDetail, AgentBuilder, WorkflowBuilder
+│   │   ├── pages/            # Home, Marketplace, AgentDetail, AgentBuilder, WorkflowBuilder,
+│   │   │                     # Governance, Billing, AdminPanel, Dashboard, DeviceRegistry
 │   │   ├── components/       # Navbar, Footer, AgentCard, SearchBar
 │   │   └── App.jsx
 │   ├── package.json
 │   └── vite.config.js
 ├── docker-compose.yml        # Multi-service orchestration
+├── examples/
+│   └── iot/                 # IoT client examples (Arduino, Raspberry Pi, ESP32)
+├── .github/
+│   └── workflows/
+│       └── codeql.yml       # CodeQL security scanning
 ├── vercel.json               # Vercel frontend deployment config
 ├── render.yaml               # Render backend deployment config
 └── README.md
@@ -322,6 +344,34 @@ TESTING=1 pytest
 |--------|------|-------------|
 | GET | `/api/v1/platform/stats` | Get platform statistics |
 | GET | `/api/v1/platform/stats/history` | Get historical stats |
+
+### Devices (`/api/v1/devices`)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/v1/devices/register` | Register a new physical device |
+| GET | `/api/v1/devices/` | List devices (filter by owner) |
+| GET | `/api/v1/devices/{id}` | Get device details |
+| PUT | `/api/v1/devices/{id}` | Update device properties |
+| DELETE | `/api/v1/devices/{id}` | Deregister a device |
+| PUT | `/api/v1/devices/{id}/status` | Update device status |
+| GET | `/api/v1/devices/{id}/capabilities` | Get device capabilities |
+| POST | `/api/v1/devices/{id}/command` | Send command to device |
+| GET | `/api/v1/devices/{id}/commands` | List device commands |
+| GET | `/api/v1/devices/{id}/twin` | Get digital twin state |
+| PUT | `/api/v1/devices/{id}/twin/state` | Update twin state |
+| POST | `/api/v1/devices/{id}/twin/simulate` | Simulate action on twin |
+| GET | `/api/v1/devices/{id}/twin/history` | Get twin history |
+| POST | `/api/v1/devices/marketplace/list` | Create device listing |
+| GET | `/api/v1/devices/marketplace` | Browse device marketplace |
+| POST | `/api/v1/devices/edge/deploy` | Deploy model to edge device |
+| GET | `/api/v1/devices/{id}/edge/deployments` | List edge deployments |
+
+### Security (`/api/v1/security`)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/security/health` | Security misconfiguration check |
 
 ## Deployment
 
