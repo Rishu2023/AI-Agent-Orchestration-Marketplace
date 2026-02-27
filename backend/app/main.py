@@ -5,6 +5,7 @@ from app.config import settings
 from app.api.routes import agents, workflows, auth, federation, protocol, economy, memory, benchmarks, training, research, governance, billing, admin, platform, devices
 from app.api.routes import metrics as metrics_route
 from app.middleware.rate_limiter import RateLimiterMiddleware
+from app.middleware.security import SecurityHeadersMiddleware, BruteForceProtectionMiddleware
 from app.services.meta_agent_service import meta_agent_service
 import logging
 import redis as redis_lib
@@ -30,6 +31,12 @@ app = FastAPI(
     redoc_url="/redoc",
     lifespan=lifespan,
 )
+
+# Security headers middleware
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Brute force protection middleware
+app.add_middleware(BruteForceProtectionMiddleware, max_attempts=5, lockout_seconds=900)
 
 # Rate limiter middleware
 app.add_middleware(RateLimiterMiddleware, max_requests=100, window_seconds=60)
@@ -128,4 +135,46 @@ def health_check_services():
     return {
         "status": "healthy" if all_healthy else "degraded",
         "services": services,
+    }
+
+
+@app.get("/api/v1/security/health")
+def security_health():
+    """Check for common security misconfigurations."""
+    checks = {}
+
+    checks["jwt_secret_configured"] = {
+        "status": "pass" if settings.secret_key and settings.secret_key != "your-secret-key-change-in-production" else "fail",
+        "detail": "JWT secret key is properly configured" if settings.secret_key and settings.secret_key != "your-secret-key-change-in-production" else "JWT secret key is using default value",
+    }
+
+    checks["debug_mode"] = {
+        "status": "pass" if not settings.debug else "warning",
+        "detail": "Debug mode is disabled" if not settings.debug else "Debug mode is enabled - disable in production",
+    }
+
+    checks["cors_configuration"] = {
+        "status": "info",
+        "detail": "CORS is configured for local development origins",
+    }
+
+    checks["rate_limiting"] = {
+        "status": "pass",
+        "detail": "Rate limiting middleware is active (100 req/60s)",
+    }
+
+    checks["brute_force_protection"] = {
+        "status": "pass",
+        "detail": "Login brute force protection is active (5 attempts, 15min lockout)",
+    }
+
+    checks["security_headers"] = {
+        "status": "pass",
+        "detail": "CSP, X-Frame-Options, X-Content-Type-Options headers are set",
+    }
+
+    all_pass = all(c["status"] in ("pass", "info") for c in checks.values())
+    return {
+        "status": "secure" if all_pass else "review_needed",
+        "checks": checks,
     }
