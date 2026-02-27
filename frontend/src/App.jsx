@@ -14,6 +14,7 @@ import BenchmarkPage from './pages/BenchmarkPage'
 import TrainingDashboard from './pages/TrainingDashboard'
 import ResearchPage from './pages/ResearchPage'
 import GovernancePage from './pages/GovernancePage'
+import BillingPage from './pages/BillingPage'
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
             <Route path="/training" element={<TrainingDashboard />} />
             <Route path="/research" element={<ResearchPage />} />
             <Route path="/governance" element={<GovernancePage />} />
+            <Route path="/billing" element={<BillingPage />} />
           </Routes>
         </main>
         <Footer />
